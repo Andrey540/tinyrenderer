@@ -50,7 +50,7 @@ void draw_3d_model_tile(Model &model, FrameTile &frame)
 
 void draw_3d_model_simple(ModelPtrArray const& models, TGAImage &frame, float *zbuffer)
 {
-    static ThreadPool threadPool;
+    static ThreadPool threadPool(4);
 
     const int width1 = frame.get_width() / 2;
     const int width2 = frame.get_width() - width1;
@@ -72,10 +72,6 @@ void draw_3d_model_simple(ModelPtrArray const& models, TGAImage &frame, float *z
         threadPool.runAsync(&draw_3d_model_tile, *pModel, tile4);
 
         threadPool.waitForFree();
-      /*  draw_3d_model_tile(*pModel, tile1);
-        draw_3d_model_tile(*pModel, tile2);
-        draw_3d_model_tile(*pModel, tile3);
-        draw_3d_model_tile(*pModel, tile4);*/
     }
 }
 
