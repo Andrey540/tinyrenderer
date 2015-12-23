@@ -8,7 +8,8 @@
 #include "our_gl.h"
 #include "shader.h"
 #include "sdlwindow.h"
-#include <SDL2/SDL.h>
+#include "thread/threadpool.h"
+#include <SDL.h>
 
 const int WIDTH  = 800;
 const int HEIGHT = 800;
@@ -49,6 +50,8 @@ void draw_3d_model_tile(Model &model, FrameTile &frame)
 
 void draw_3d_model_simple(ModelPtrArray const& models, TGAImage &frame, float *zbuffer)
 {
+    static ThreadPool threadPool;
+
     const int width1 = frame.get_width() / 2;
     const int width2 = frame.get_width() - width1;
     const int height1 = frame.get_height() / 2;
@@ -63,10 +66,16 @@ void draw_3d_model_simple(ModelPtrArray const& models, TGAImage &frame, float *z
     tile3.init(frame, zbuffer);
     tile4.init(frame, zbuffer);
     for (auto const& pModel : models) {
-        draw_3d_model_tile(*pModel, tile1);
+        threadPool.runAsync(&draw_3d_model_tile, *pModel, tile1);
+        threadPool.runAsync(&draw_3d_model_tile, *pModel, tile2);
+        threadPool.runAsync(&draw_3d_model_tile, *pModel, tile3);
+        threadPool.runAsync(&draw_3d_model_tile, *pModel, tile4);
+
+        threadPool.waitForFree();
+      /*  draw_3d_model_tile(*pModel, tile1);
         draw_3d_model_tile(*pModel, tile2);
         draw_3d_model_tile(*pModel, tile3);
-        draw_3d_model_tile(*pModel, tile4);
+        draw_3d_model_tile(*pModel, tile4);*/
     }
 }
 

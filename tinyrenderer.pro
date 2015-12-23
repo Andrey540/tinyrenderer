@@ -1,6 +1,10 @@
+CONFIG -= qt
 CONFIG += c++11
 
-LIBS += -lSDL2
+INCLUDEPATH += D:\\projects\SDL2-2.0.3\include
+LIBS += -L"D:\\projects\SDL2-2.0.3\lib\x86" \
+-lSDL2main\
+-lSDL2\
 
 HEADERS += \
     geometry.h \
@@ -9,7 +13,10 @@ HEADERS += \
     tgaimage.h \
     sdlwindow.h \
     shader.h \
-    frametile.h
+    frametile.h \
+    threadworker.h \
+    thread/threadworker.h \
+    thread/threadpool.h
 
 SOURCES += \
     geometry.cpp \
