@@ -1,7 +1,4 @@
-#ifndef THREADWORKER
-#define THREADWORKER
-
-#endif // THREADWORKER
+#pragma once
 
 #include <functional>
 #include <thread>

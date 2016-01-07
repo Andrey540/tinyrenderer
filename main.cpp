@@ -22,6 +22,8 @@ Vec3f        UP(0,1,0);
 typedef std::shared_ptr<Model> ModelPtr;
 typedef std::vector<ModelPtr> ModelPtrArray;
 
+static ThreadPool threadPool;
+
 Vec3f get_rotated_eye()
 {
     float secondsSinceStart = 0.001f * float(SDL_GetTicks());
@@ -50,8 +52,6 @@ void draw_3d_model_tile(Model &model, FrameTile &frame)
 
 void draw_3d_model_simple(ModelPtrArray const& models, TGAImage &frame, float *zbuffer)
 {
-    static ThreadPool threadPool(4);
-
     const int width1 = frame.get_width() / 2;
     const int width2 = frame.get_width() - width1;
     const int height1 = frame.get_height() / 2;
